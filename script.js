@@ -1,3 +1,4 @@
+import { creatures } from "./data.js";
 // =============================================================
 // script.js — Mon Dex
 // =============================================================
@@ -11,7 +12,41 @@
 // Supprimez les cartes écrites à la main dans index.html et
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
+let section=document.querySelector("#grid")
+creatures.forEach((creat)=>{
+    let typeShape=""
+    switch(creat.type){
+        case "Feu": typeShape+="bg-orange-500"; break;
+        case "Eau": typeShape+="bg-blue-500"; break;
+        case "Plante": typeShape+="bg-green-500"; break;
+        case "Électrik": typeShape+="bg-yellow-500 "; break;
+        case "Psy": typeShape+="bg-purple-500 "; break;
+        case "Fée": typeShape+="bg-pink-200 "; break;
+        case "Normal": typeShape+=" bg-black"; break;
+        case "Ténèbres": typeShape+="bg-purple-950"; break;
+        case "Combat": typeShape+="bg-yellow-950"; break;
+    }
 
+    let article=document.createElement("article")
+    article.innerHTML=`
+        <article class="flex flex-col gap-3 rounded-card border-2 border-red-500 bg-white p-3 pb-4 hover:-translate-y-">
+          <div class="relative flex h-40 items-center justify-center rounded-xl bg-brand-light">
+            <img src="${creat.image}" 
+          class="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
+          alt="">
+            <span class="absolute left-3 top-2 font-mono text-sm text-muted">${creat.id}</span>
+          </div>
+          <div class="flex items-center justify-between gap-2 flex-col md:flex-row">
+            <h3 class="font-display text-xl font-semibold">${creat.name}</h3>
+            <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${creat.type}</span>
+          </div>
+          <p class="text-sm text-muted text-center md:text-start">${creat.level} · Total ${creat.stats.attack+creat.stats.defence}</p>
+          <button type="button" class="btn-outline bg-red-500 " >Ajouter à l'équipe</button>
+        </article>
+    
+    `
+    section.append(article)
+})
 
 // -------------------------------------------------------------
 // 2. DÉTAIL
