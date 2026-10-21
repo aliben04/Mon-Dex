@@ -13,6 +13,8 @@ import { creatures } from "./data.js";
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
 let section=document.querySelector("#grid")
+let filters=document.querySelector("#filters")
+let types=[]
 creatures.forEach((creat)=>{
     let typeShape=""
     switch(creat.type){
@@ -26,10 +28,12 @@ creatures.forEach((creat)=>{
         case "Ténèbres": typeShape+="bg-purple-950"; break;
         case "Combat": typeShape+="bg-yellow-950"; break;
     }
-
+     if (!types.includes(creat.type)) {
+        types.push(creat.type);
+    } 
     let article=document.createElement("article")
     article.innerHTML=`
-        <article class="flex flex-col gap-3 rounded-card border-2 border-red-500 bg-white p-3 pb-4 hover:-translate-y-">
+        <article class="flex flex-col gap-3 rounded-card border-2 border-red-500 bg-white p-3 pb-4 hover:translate-y-2">
           <div class="relative flex h-40 items-center justify-center rounded-xl bg-brand-light">
             <img src="${creat.image}" 
           class="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
@@ -47,7 +51,12 @@ creatures.forEach((creat)=>{
     `
     section.append(article)
 })
-
+  
+types.forEach((t)=>{
+    let button=document.createElement("button")
+    button.innerHTML=`<button type="button" class="chip shrink-0">${t}</button>`
+    filters.append(button)
+})
 // -------------------------------------------------------------
 // 2. DÉTAIL
 // Un clic sur une carte ouvre le panneau de détail :
