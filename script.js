@@ -14,7 +14,8 @@ import { creatures } from "./data.js";
 // -------------------------------------------------------------
 let section=document.querySelector("#grid")
 let filters=document.querySelector("#filters")
-
+let detail=document.querySelector("#detail")
+ let close=document.querySelector("#close")
 let types=[]
 creatures.forEach((creat)=>{
     let typeShape=""
@@ -34,7 +35,7 @@ creatures.forEach((creat)=>{
     } 
     let article=document.createElement("article")
     article.innerHTML=`
-        <article class="flex flex-col gap-3 rounded-card border-2 border-red-500 bg-white p-3 pb-4 hover:translate-y-2">
+        <article class="flex flex-col gap-3 rounded-card border-2  bg-white p-3 pb-4 hover:translate-y-2">
           <div class="relative flex h-40 items-center justify-center rounded-xl bg-brand-light">
             <img src="${creat.image}" 
           class="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
@@ -46,7 +47,7 @@ creatures.forEach((creat)=>{
             <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${creat.type}</span>
           </div>
           <p class="text-sm text-muted text-center md:text-start">${creat.level} · Total ${creat.stats.attack+creat.stats.defence}</p>
-          <button type="button" class="btn-outline  bg-red-500 text-white" >Ajouter à l'équipe</button>
+          <button type="button" class="btn-outline  ${typeShape} text-white" >Ajouter à l'équipe</button>
         </article>
     
     `
@@ -56,39 +57,49 @@ creatures.forEach((creat)=>{
 // Un clic sur une carte ouvre le panneau de détail :
 // image, description, et statistiques affichées en barres.
 // -------------------------------------------------------------
-    let idPok=document.querySelector("#idPok")
-    let imgDetails=document.querySelector("#imgDetails")
-    let nameDetails=document.querySelector("#nameDetails")
-    let descriptionDeatls=document.querySelector("#descriptionDeatls")
-    let pv=document.querySelector("#pv")
-    let attaque=document.querySelector("#attaque")
-    let defense=document.querySelector("#defense")
-    let type=document.querySelector("#type")
-    article.addEventListener("click",()=>{
-      idPok.innerHTML=creat.id
-      imgDetails.setAttribute("src",`${creat.image}`)
-      nameDetails.innerHTML=creat.name 
-      descriptionDeatls.innerHTML=creat.description 
-      pv.innerHTML=`
-      <span class="font-bold">PV</span>
-      <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.hp}%"></span></span>
-      <span class="text-right font-mono">${creat.stats.hp}</span>
-      `
-      attaque.innerHTML=`
-      <span class="font-bold">Attaque</span>
-      <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.attack}%"></span></span>
-      <span class="text-right font-mono">${creat.stats.attack}</span>
-      `
-      defense.innerHTML=`
-      <span class="font-bold">Defece</span>
-      <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.defence}%"></span></span>
-      <span class="text-right font-mono">${creat.stats.defence}</span>
-      `
-      type.innerHTML=creat.type
-      
-      type.setAttribute("class",`rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white`)
+  
    
+    article.addEventListener("click",()=>{
 
+      detail.innerHTML=`
+      
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-sm text-muted">${creat.id}</span>
+            <button id="close" type="button" aria-label="Fermer le détail" class="btn-outline bg-red-500 w-11 px-0">✕</button>
+          </div>
+          <div class="flex h-48 items-center justify-center rounded-2xl bg-brand-light">
+            <img src="${creat.image}"
+          class="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
+          alt="">
+          </div>
+          <div class="flex items-center justify-between">
+            <h2  class="font-display text-3xl font-extrabold">${creat.name}</h2>
+            <span id="type" class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white">${creat.type}</span>
+          </div>
+          <p class="text-gray-700">${creat.description}</p>
+          <div class="flex flex-col gap-2 text-sm">
+            <div id="pv" class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
+                    <span class="font-bold">PV</span>
+                    <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width:${creat.stats.hp}%"></span></span>
+                    <span class="text-right font-mono">${creat.stats.hp}</span>
+            </div>
+            <div id="attaque" class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
+              <span class="font-bold">Attaque</span>
+              <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.attack}%"></span></span>
+              <span class="text-right font-mono">${creat.stats.attack}</span>
+            </div>
+            <div id="defense" class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
+              <span class="font-bold">Defece</span>
+              <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.defence}%"></span></span>
+              <span class="text-right font-mono">${creat.stats.defence}</span>
+            </div>
+          </div>
+          <button type="button" class="btn-primary ${typeShape}">Ajouter à l'équipe</button>
+      
+      `
+      detail.querySelector("#close").addEventListener("click", () => {
+          detail.innerHTML = '<h1 class="text-center font-bold">Aucun Pokémon sélectionné</h1>';
+      });
 
     })
     section.append(article)
@@ -101,10 +112,7 @@ types.forEach((t)=>{
 })
 
 
-
-function deatails(){
-
-}
+      
 // -------------------------------------------------------------
 // 3. RECHERCHE
 // La liste se met à jour pendant la saisie d'un nom
