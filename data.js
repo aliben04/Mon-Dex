@@ -59,7 +59,7 @@ export const creatures = [
     name: "Rondoudou",
     type: "Fée",
     level: "Base",
-    stats: { hp: 115, attack: 45, defence: 20 },
+    stats: { hp: 99, attack: 45, defence: 20 },
     image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png",
     description: "Un Pokémon qui chante pour endormir ses adversaires."
   },
@@ -86,7 +86,7 @@ export const creatures = [
     name: "Mewtwo",
     type: "Psy",
     level: "Niveau 1",
-    stats: { hp: 106, attack: 110, defence: 90 },
+    stats: { hp: 99, attack: 110, defence: 90 },
     image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
     description: "Un puissant Pokémon de type Psy."
   },

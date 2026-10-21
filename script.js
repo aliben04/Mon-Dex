@@ -14,6 +14,7 @@ import { creatures } from "./data.js";
 // -------------------------------------------------------------
 let section=document.querySelector("#grid")
 let filters=document.querySelector("#filters")
+
 let types=[]
 creatures.forEach((creat)=>{
     let typeShape=""
@@ -45,10 +46,51 @@ creatures.forEach((creat)=>{
             <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${creat.type}</span>
           </div>
           <p class="text-sm text-muted text-center md:text-start">${creat.level} · Total ${creat.stats.attack+creat.stats.defence}</p>
-          <button type="button" class="btn-outline bg-red-500 " >Ajouter à l'équipe</button>
+          <button type="button" class="btn-outline  bg-red-500 text-white" >Ajouter à l'équipe</button>
         </article>
     
     `
+
+// -------------------------------------------------------------
+// 2. DÉTAIL
+// Un clic sur une carte ouvre le panneau de détail :
+// image, description, et statistiques affichées en barres.
+// -------------------------------------------------------------
+    let idPok=document.querySelector("#idPok")
+    let imgDetails=document.querySelector("#imgDetails")
+    let nameDetails=document.querySelector("#nameDetails")
+    let descriptionDeatls=document.querySelector("#descriptionDeatls")
+    let pv=document.querySelector("#pv")
+    let attaque=document.querySelector("#attaque")
+    let defense=document.querySelector("#defense")
+    let type=document.querySelector("#type")
+    article.addEventListener("click",()=>{
+      idPok.innerHTML=creat.id
+      imgDetails.setAttribute("src",`${creat.image}`)
+      nameDetails.innerHTML=creat.name 
+      descriptionDeatls.innerHTML=creat.description 
+      pv.innerHTML=`
+      <span class="font-bold">PV</span>
+      <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.hp}%"></span></span>
+      <span class="text-right font-mono">${creat.stats.hp}</span>
+      `
+      attaque.innerHTML=`
+      <span class="font-bold">Attaque</span>
+      <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.attack}%"></span></span>
+      <span class="text-right font-mono">${creat.stats.attack}</span>
+      `
+      defense.innerHTML=`
+      <span class="font-bold">Defece</span>
+      <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.defence}%"></span></span>
+      <span class="text-right font-mono">${creat.stats.defence}</span>
+      `
+      type.innerHTML=creat.type
+      
+      type.setAttribute("class",`rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white`)
+   
+
+
+    })
     section.append(article)
 })
   
@@ -57,13 +99,12 @@ types.forEach((t)=>{
     button.innerHTML=`<button type="button" class="chip shrink-0">${t}</button>`
     filters.append(button)
 })
-// -------------------------------------------------------------
-// 2. DÉTAIL
-// Un clic sur une carte ouvre le panneau de détail :
-// image, description, et statistiques affichées en barres.
-// -------------------------------------------------------------
 
 
+
+function deatails(){
+
+}
 // -------------------------------------------------------------
 // 3. RECHERCHE
 // La liste se met à jour pendant la saisie d'un nom
