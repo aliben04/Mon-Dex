@@ -14,7 +14,7 @@ import { creatures } from "./data.js";
 // -------------------------------------------------------------
 
 
-function afficherCart(cart){
+function afficherCard(cart){
       let typeShape="bg-black"
     /*
     switch(cart.type){
@@ -103,18 +103,10 @@ function afficherCart(cart){
 let section=document.querySelector("#grid")
 let filters=document.querySelector("#filters")
 let detail=document.querySelector("#detail")
-let types=[]
-creatures.forEach((creat)=>{
-     if (!types.includes(creat.type)) {
-        types.push(creat.type);
-    } 
-    afficherCart(creat)
-})
-  
-types.forEach((t)=>{
-    let button=document.createElement("button")
-    button.innerHTML=`<button type="button" class="chip shrink-0">${t}</button>`
-    filters.append(button)
+
+
+creatures.forEach((pok)=>{
+  afficherCard(pok)
 })
       
 // -------------------------------------------------------------
@@ -129,7 +121,7 @@ search.addEventListener("input",()=>{
   section.innerHTML = "";
   creatures.forEach((creat)=>{
     if(creat.name.toLowerCase().includes(search.value.toLowerCase())){
-      afficherCart(creat)
+      afficherCard(creat)
   }
   
   })
@@ -145,7 +137,40 @@ search.addEventListener("input",()=>{
 // « Tous » réinitialise le filtre.
 // La recherche et le filtre fonctionnent ENSEMBLE.
 // -------------------------------------------------------------
+let types=[]
+creatures.forEach((pok)=>{
+      if (!types.includes(pok.type)) {
+          types.push(pok.type);
+      } 
+})
+let tous=document.querySelector("#tous")
+tous.addEventListener("click",()=>{
+    section.innerHTML = "";
+      creatures.forEach((pok)=>{
+        afficherCard(pok)
+      })
+    tous.className="chip shrink-0 focus:bg-red-500 focus:text-white focus:border-red-500"
+  })
+function filterWithType(type){
+  section.innerHTML = "";
+    creatures.forEach((pok)=>{
+      if(pok.type===type){
+        afficherCard(pok)
+      }
+    })
+}
 
+types.forEach((t)=>{
+    let button=document.createElement("button")
+    button.textContent=t;
+    button.className="chip shrink-0 "
+    button.addEventListener("click",()=>{
+      filterWithType(t)  
+      button.className="chip shrink-0 focus:bg-red-500 focus:text-white focus:border-red-500"
+      tous.className="chip shrink-0"
+    })
+    filters.append(button)
+})
 
 // -------------------------------------------------------------
 // 5. CRÉER UNE CRÉATURE
