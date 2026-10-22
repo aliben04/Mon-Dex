@@ -12,14 +12,12 @@ import { creatures } from "./data.js";
 // Supprimez les cartes écrites à la main dans index.html et
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
-let section=document.querySelector("#grid")
-let filters=document.querySelector("#filters")
-let detail=document.querySelector("#detail")
- let close=document.querySelector("#close")
-let types=[]
-creatures.forEach((creat)=>{
-    let typeShape=""
-    switch(creat.type){
+
+
+function afficherCart(cart){
+      let typeShape="bg-black"
+    /*
+    switch(cart.type){
         case "Feu": typeShape+="bg-orange-500"; break;
         case "Eau": typeShape+="bg-blue-500"; break;
         case "Plante": typeShape+="bg-green-500"; break;
@@ -29,24 +27,21 @@ creatures.forEach((creat)=>{
         case "Normal": typeShape+=" bg-black"; break;
         case "Ténèbres": typeShape+="bg-purple-950"; break;
         case "Combat": typeShape+="bg-yellow-950"; break;
-    }
-     if (!types.includes(creat.type)) {
-        types.push(creat.type);
-    } 
-    let article=document.createElement("article")
+    }*/
+      let article=document.createElement("article")
     article.innerHTML=`
         <article class="flex flex-col gap-3 rounded-card border-2  bg-white p-3 pb-4 hover:translate-y-2">
           <div class="relative flex h-40 items-center justify-center rounded-xl bg-brand-light">
-            <img src="${creat.image}" 
+            <img src="${cart.image}" 
           class="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
           alt="">
-            <span class="absolute left-3 top-2 font-mono text-sm text-muted">${creat.id}</span>
+            <span class="absolute left-3 top-2 font-mono text-sm text-muted">${cart.id}</span>
           </div>
           <div class="flex items-center justify-between gap-2 flex-col md:flex-row">
-            <h3 class="font-display text-xl font-semibold">${creat.name}</h3>
-            <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${creat.type}</span>
+            <h3 class="font-display text-xl font-semibold">${cart.name}</h3>
+            <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${cart.type}</span>
           </div>
-          <p class="text-sm text-muted text-center md:text-start">${creat.level} · Total ${creat.stats.attack+creat.stats.defence}</p>
+          <p class="text-sm text-muted text-center md:text-start">${cart.level} · Total ${cart.stats.attack+cart.stats.defence}</p>
           <button type="button" class="btn-outline  ${typeShape} text-white" >Ajouter à l'équipe</button>
         </article>
     
@@ -64,34 +59,34 @@ creatures.forEach((creat)=>{
       detail.innerHTML=`
       
           <div class="flex items-center justify-between">
-            <span class="font-mono text-sm text-muted">${creat.id}</span>
+            <span class="font-mono text-sm text-muted">${cart.id}</span>
             <button id="close" type="button" aria-label="Fermer le détail" class="btn-outline bg-red-500 w-11 px-0">✕</button>
           </div>
           <div class="flex h-48 items-center justify-center rounded-2xl bg-brand-light">
-            <img src="${creat.image}"
+            <img src="${cart.image}"
           class="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
           alt="">
           </div>
           <div class="flex items-center justify-between">
-            <h2  class="font-display text-3xl font-extrabold">${creat.name}</h2>
-            <span id="type" class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white">${creat.type}</span>
+            <h2  class="font-display text-3xl font-extrabold">${cart.name}</h2>
+            <span id="type" class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white">${cart.type}</span>
           </div>
-          <p class="text-gray-700">${creat.description}</p>
+          <p class="text-gray-700">${cart.description}</p>
           <div class="flex flex-col gap-2 text-sm">
             <div id="pv" class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
                     <span class="font-bold">PV</span>
-                    <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width:${creat.stats.hp}%"></span></span>
-                    <span class="text-right font-mono">${creat.stats.hp}</span>
+                    <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width:${cart.stats.hp}%"></span></span>
+                    <span class="text-right font-mono">${cart.stats.hp}</span>
             </div>
             <div id="attaque" class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
               <span class="font-bold">Attaque</span>
-              <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.attack}%"></span></span>
-              <span class="text-right font-mono">${creat.stats.attack}</span>
+              <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${cart.stats.attack}%"></span></span>
+              <span class="text-right font-mono">${cart.stats.attack}</span>
             </div>
             <div id="defense" class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
               <span class="font-bold">Defece</span>
-              <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${creat.stats.defence}%"></span></span>
-              <span class="text-right font-mono">${creat.stats.defence}</span>
+              <span class="h-3 rounded-full bg-ground"><span class="block h-3 rounded-full ${typeShape}" style="width: ${cart.stats.defence}%"></span></span>
+              <span class="text-right font-mono">${cart.stats.defence}</span>
             </div>
           </div>
           <button type="button" class="btn-primary ${typeShape}">Ajouter à l'équipe</button>
@@ -103,6 +98,17 @@ creatures.forEach((creat)=>{
 
     })
     section.append(article)
+
+}
+let section=document.querySelector("#grid")
+let filters=document.querySelector("#filters")
+let detail=document.querySelector("#detail")
+let types=[]
+creatures.forEach((creat)=>{
+     if (!types.includes(creat.type)) {
+        types.push(creat.type);
+    } 
+    afficherCart(creat)
 })
   
 types.forEach((t)=>{
@@ -110,8 +116,6 @@ types.forEach((t)=>{
     button.innerHTML=`<button type="button" class="chip shrink-0">${t}</button>`
     filters.append(button)
 })
-
-
       
 // -------------------------------------------------------------
 // 3. RECHERCHE
@@ -119,6 +123,21 @@ types.forEach((t)=>{
 // (sans tenir compte des majuscules).
 // -------------------------------------------------------------
 
+let search=document.querySelector("#search")
+
+search.addEventListener("input",()=>{
+  section.innerHTML = "";
+  creatures.forEach((creat)=>{
+    if(creat.name.toLowerCase().includes(search.value.toLowerCase())){
+      afficherCart(creat)
+  }
+  
+  })
+  if (section.innerHTML === "") {
+        section.innerHTML = "<h1 class='text-center font-bold rounded-card border-2 border-ink bg-white p-6'>Aucun Pokémon trouvé !</h1>";
+  }
+
+})
 
 // -------------------------------------------------------------
 // 4. FILTRE
