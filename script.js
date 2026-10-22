@@ -13,7 +13,7 @@ import { creatures } from "./data.js";
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
 
-
+let teams=[]
 function afficherCard(cart){
       let typeShape="bg-black"
     /*
@@ -42,10 +42,10 @@ function afficherCard(cart){
             <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${cart.type}</span>
           </div>
           <p class="text-sm text-muted text-center md:text-start">${cart.level} · Total ${cart.stats.attack+cart.stats.defence}</p>
-          <button type="button" class="btn-outline  ${typeShape} text-white" >Ajouter à l'équipe</button>
+          <button type="button" class="btn-outline ${typeShape} text-white" >Ajouter à l'équipe</button>
         </article>
-    
     `
+
 
 // -------------------------------------------------------------
 // 2. DÉTAIL
@@ -89,12 +89,21 @@ function afficherCard(cart){
               <span class="text-right font-mono">${cart.stats.defence}</span>
             </div>
           </div>
-          <button type="button" class="btn-primary ${typeShape}">Ajouter à l'équipe</button>
+          <button id="ajouter" type="button" class="btn-primary ${typeShape}">Ajouter à l'équipe</button>
       
       `
       detail.querySelector("#close").addEventListener("click", () => {
           detail.innerHTML = '<h1 class="text-center font-bold">Aucun Pokémon sélectionné</h1>';
       });
+      detail.querySelector("#ajouter").addEventListener("click",()=>{
+      let card={
+          id:cart.id,
+          img:cart.image,
+          name:cart.name,
+      }
+        teams.push(card)
+        addcartInTeam()
+      })
 
     })
     section.append(article)
@@ -185,8 +194,25 @@ types.forEach((t)=>{
 // Boutons « Ajouter à l'équipe » et « Retirer », gérés avec UN SEUL
 // écouteur sur la grille et UN SEUL sur l'équipe (délégation).
 // -------------------------------------------------------------
+let team=document.querySelector("#team")
+let listT=document.querySelector("#listT")
+function addcartInTeam(){
+  let div =document.createElement("div")
+  if(teams.length>0){
+    teams.forEach((te)=>{
 
-
+        div.innerHTML=`
+                <div class=" relative col-span-1  border  flex flex-col rounded-lg p-2">
+                  <i class="fa-solid fa-xmark text-[16px] absolute right-0 top-1 text-red-500"></i>
+                  <img src="${te.img}" alt="hhhhh" class="py-3">
+                  <h3 class="text-[16px] font-bold text-center">${te.name}</h3>
+                  
+                </div>`
+              })
+              
+            }
+        listT.append(div)
+}
 // -------------------------------------------------------------
 // 7. RÈGLES DE L'ÉQUIPE
 // 6 créatures au maximum, pas de doublon, un message clair quand
