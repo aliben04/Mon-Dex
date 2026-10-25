@@ -12,11 +12,14 @@ import { creatures } from "./data.js";
 // Supprimez les cartes écrites à la main dans index.html et
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
+let cmp=document.querySelector("#cmp")
 
-let teams=[]
+let teams = JSON.parse(localStorage.getItem("teams")) || [];
+let tem = teams;
+
 function afficherCard(cart){
-      let typeShape="bg-black"
-    /*
+  let typeShape=""
+    
     switch(cart.type){
         case "Feu": typeShape+="bg-orange-500"; break;
         case "Eau": typeShape+="bg-blue-500"; break;
@@ -27,7 +30,7 @@ function afficherCard(cart){
         case "Normal": typeShape+=" bg-black"; break;
         case "Ténèbres": typeShape+="bg-purple-950"; break;
         case "Combat": typeShape+="bg-yellow-950"; break;
-    }*/
+    }
       let article=document.createElement("article")
     article.innerHTML=`
         <article class="flex flex-col gap-3 rounded-card border-2  bg-white p-3 pb-4 hover:translate-y-2">
@@ -42,9 +45,34 @@ function afficherCard(cart){
             <span class="rounded-full ${typeShape} px-3 py-1 text-sm font-bold text-white ">${cart.type}</span>
           </div>
           <p class="text-sm text-muted text-center md:text-start">${cart.level} · Total ${cart.stats.attack+cart.stats.defence}</p>
-          <button type="button" class="btn-outline ${typeShape} text-white" >Ajouter à l'équipe</button>
+          <button id="ajouter" type="button" class="btn-outline ${typeShape} text-white " >Ajouter à l'équipe</button>
         </article>
     `
+    let btnA=article.querySelector("#ajouter")
+    let btnDisabled=false
+      btnA.addEventListener("click",()=>{
+      let card={
+          id:cart.id,
+          img:cart.image,
+          name:cart.name,
+      }
+      if(teams.length<6){
+        teams.push(card)
+
+        localStorage.setItem("teams", JSON.stringify(teams));
+        addcartInTeam()
+      }
+      cmp.textContent=teams.length
+      btnDisabled=true
+      btnA.disabled=true
+      btnA.classList="btn-outline bg-grey-500 text-black "
+      })
+      
+      if(btnDisabled){
+        btnA.disabled=true
+      }
+      
+
 
 
 // -------------------------------------------------------------
@@ -59,7 +87,7 @@ function afficherCard(cart){
       detail.innerHTML=`
       
           <div class="flex items-center justify-between">
-            <span class="font-mono text-sm text-muted">${cart.id}</span>
+            <span  class="font-mono text-sm text-muted">${cart.id}</span>
             <button id="close" type="button" aria-label="Fermer le détail" class="btn-outline bg-red-500 w-11 px-0">✕</button>
           </div>
           <div class="flex h-48 items-center justify-center rounded-2xl bg-brand-light">
@@ -95,23 +123,37 @@ function afficherCard(cart){
       detail.querySelector("#close").addEventListener("click", () => {
           detail.innerHTML = '<h1 class="text-center font-bold">Aucun Pokémon sélectionné</h1>';
       });
-      detail.querySelector("#ajouter").addEventListener("click",()=>{
+      let btnA=detail.querySelector("#ajouter")
+      btnA.addEventListener("click",()=>{
       let card={
           id:cart.id,
           img:cart.image,
           name:cart.name,
       }
+      if(teams.length<6){
         teams.push(card)
         addcartInTeam()
+      }
+      cmp.textContent=teams.length
+      btnDisabled=true
+      btnA.disabled=true
+      btnA.classList="btn-outline bg-grey-500 text-black "
       })
-
+      if(btnDisabled){
+        btnA.disabled=true
+      }
+      
     })
+    
     section.append(article)
 
 }
+
+cmp.textContent=teams.length
 let section=document.querySelector("#grid")
 let filters=document.querySelector("#filters")
 let detail=document.querySelector("#detail")
+
 
 
 creatures.forEach((pok)=>{
@@ -158,7 +200,7 @@ tous.addEventListener("click",()=>{
       creatures.forEach((pok)=>{
         afficherCard(pok)
       })
-    tous.className="chip shrink-0 focus:bg-red-500 focus:text-white focus:border-red-500"
+    tous.className=`chip shrink-0 focus:${typeShape} focus:text-white focus:border-red-500`
   })
 function filterWithType(type){
   section.innerHTML = "";
@@ -194,25 +236,38 @@ types.forEach((t)=>{
 // Boutons « Ajouter à l'équipe » et « Retirer », gérés avec UN SEUL
 // écouteur sur la grille et UN SEUL sur l'équipe (délégation).
 // -------------------------------------------------------------
-let team=document.querySelector("#team")
-let listT=document.querySelector("#listT")
-function addcartInTeam(){
-  let div =document.createElement("div")
-  if(teams.length>0){
-    teams.forEach((te)=>{
 
-        div.innerHTML=`
-                <div class=" relative col-span-1  border  flex flex-col rounded-lg p-2">
-                  <i class="fa-solid fa-xmark text-[16px] absolute right-0 top-1 text-red-500"></i>
-                  <img src="${te.img}" alt="hhhhh" class="py-3">
-                  <h3 class="text-[16px] font-bold text-center">${te.name}</h3>
-                  
-                </div>`
-              })
-              
-            }
-        listT.append(div)
+console.log(teams)
+
+
+let listT=document.querySelector("#listT")
+function addcartInTeam() {
+    listT.innerHTML = "";
+
+    teams.forEach((te) => {
+        let div = document.createElement("div");
+
+        div.innerHTML = `
+            <div  class="relative border flex flex-col rounded-lg p-2">
+             <button id="removePok" ><i class="fa-solid fa-xmark text-[16px] absolute right-0 top-1 text-red-500"></i></button>
+                <img src="${te.img}" alt="${te.name}" class="py-3">
+                <h3 class="text-[16px] font-bold text-center">
+                    ${te.name}
+                </h3>
+            </div>
+        `;
+
+        listT.append(div);
+        div.querySelector("#removePok").addEventListener("click",()=>{
+          teams.splice(teams.indexOf(te),1)
+          localStorage.setItem("teams", JSON.stringify(teams));
+          cmp.textContent=teams.length
+          addcartInTeam();
+        })
+  
+    });
 }
+addcartInTeam()
 // -------------------------------------------------------------
 // 7. RÈGLES DE L'ÉQUIPE
 // 6 créatures au maximum, pas de doublon, un message clair quand
