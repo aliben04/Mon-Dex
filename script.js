@@ -338,6 +338,119 @@ types.forEach((t)=>{
 // champ, et n'ajoutez jamais une créature invalide.
 // -------------------------------------------------------------
 
+function addPok(){
+  let id=document.querySelector("input[name=\"id\"]")
+  let id_error=id.nextElementSibling
+  let id_reg=/^#\d{3}$/
+  id.addEventListener("input",()=>{
+
+    if(id_reg.test(id.value)){
+          id_error.textContent="numero valid"
+          id_error.classList="text-green-500"
+          id.style.border="green 2px solid"
+          id.style.boxShadow="2px 2px 5px green"
+    }else{
+          id_error.textContent="numero invalid"
+          id_error.classList="text-red-500"
+          id.style.border="red 2px solid"
+          id.style.boxShadow="2px 2px 5px red"
+    }
+  })
+  let name=document.querySelector("input[name=\"name\"]")
+  let name_error=name.nextElementSibling
+  let name_reg=/^[A-Za-zÀ-ÿ0-9][A-Za-zÀ-ÿ09 .'-]{1,29}$/
+  name.addEventListener("input",()=>{
+
+    if(name_reg.test(name.value)){
+          name_error.textContent="name valid"
+          name_error.classList="text-green-500"
+          name.style.border="green 2px solid"
+          name.style.boxShadow="2px 2px 5px green"
+    }else{
+          name_error.textContent="name invalid"
+          name_error.classList="text-red-500"
+          name.style.border="red 2px solid"
+          name.style.boxShadow="2px 2px 5px red"
+    }
+  })
+  let niveu=document.querySelector("input[name=\"level\"]")
+  let niveu_error=niveu.nextElementSibling
+  let niveu_reg=/^(Niveau|Level)\s\d{1}$/
+  niveu.addEventListener("input",()=>{
+
+    if(niveu_reg.test(niveu.value)){
+          niveu_error.textContent="niveu valid"
+          niveu_error.classList="text-green-500"
+          niveu.style.border="green 2px solid"
+          niveu.style.boxShadow="2px 2px 5px green"
+    }else{
+          niveu_error.textContent="niveu invalid"
+          niveu_error.classList="text-red-500"
+          niveu.style.border="red 2px solid"
+          niveu.style.boxShadow="2px 2px 5px red"
+    }
+  })
+  let description=document.querySelector("textarea[name=\"description\"]")
+  let description_error=description.nextElementSibling
+  let description_reg=/^[\s\S]{10,200}$/ 
+  description.addEventListener("input",()=>{
+
+    if(description_reg.test(description.value)){
+          description_error.textContent="description valid"
+          description_error.classList="text-green-500"
+          description.style.border="green 2px solid"
+          description.style.boxShadow="2px 2px 5px green"
+    }else{
+          description_error.textContent="description invalid"
+          description_error.classList="text-red-500"
+          description.style.border="red 2px solid"
+          description.style.boxShadow="2px 2px 5px red"
+    }
+  })
+  let image=document.querySelector("input[name=\"image\"]")
+  let image_error=description.nextElementSibling
+  let image_reg=/^https:\/\/\S+\.(png|jpe?g|webp|gif)$/i 
+  image.addEventListener("input",()=>{
+
+    if(image_reg.test(image.value)){
+          image_error.textContent="image valid"
+          image_error.classList="text-green-500"
+          image.style.border="green 2px solid"
+          image.style.boxShadow="2px 2px 5px green"
+    }else{
+          image_error.textContent="image invalid"
+          image_error.classList="text-red-500"
+          image.style.border="red 2px solid"
+          image.style.boxShadow="2px 2px 5px red"
+    }
+  })
+  let st=document.querySelector("input[name=\"stat1\"]")
+  checkStatistique(st)
+  let st2=document.querySelector("input[name=\"stat2\"]")
+  checkStatistique(st2)
+  let st3=document.querySelector("input[name=\"stat3\"]")
+  checkStatistique(st3)
+
+}
+function checkStatistique(st){
+  let st_error=st.nextElementSibling
+  let st_reg=/^\d{1,3}$/ 
+  st.addEventListener("input",()=>{
+
+    if(st_reg.test(st.value)){
+          st_error.textContent="st valid"
+          st_error.classList="text-green-500"
+          st.style.border="green 2px solid"
+          st.style.boxShadow="2px 2px 5px green"
+    }else{
+          st_error.textContent="st invalid"
+          st_error.classList="text-red-500"
+          st.style.border="red 2px solid"
+          st.style.boxShadow="2px 2px 5px red"
+    }
+  })
+}
+addPok()
 
 // -------------------------------------------------------------
 // 6. MON ÉQUIPE
