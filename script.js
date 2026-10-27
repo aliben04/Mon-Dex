@@ -22,9 +22,9 @@ let idPokemonDetail = ""
 
 function afficherCard(cart) {
 
-    let typeShape = "bg-black";
-    /*
-        switch(cart.type){
+    let typeShape = "";
+    
+    switch(cart.type){
         case "Feu": typeShape+="bg-orange-500"; break;
         case "Eau": typeShape+="bg-blue-500"; break;
         case "Plante": typeShape+="bg-green-500"; break;
@@ -35,12 +35,12 @@ function afficherCard(cart) {
         case "Ténèbres": typeShape+="bg-purple-950"; break;
         case "Combat": typeShape+="bg-yellow-950"; break;
     }
-    */
+    
 
     let article = document.createElement("article");
 
     article.innerHTML = `
-        <article class="flex flex-col gap-3 rounded-card border-2 bg-white p-3 pb-4 hover:translate-y-2">
+        <article class="flex flex-col gap-3 rounded-card border-2  bg-white p-3 pb-4 hover:translate-y-2">
 
             <div class="relative flex h-40 items-center justify-center rounded-xl bg-brand-light">
                 <img src="${cart.image}"
@@ -84,11 +84,17 @@ function afficherCard(cart) {
 
         // Bouton dyal listPok
         btnA.disabled = existe || teams.length >= 6;
-
+        if( teams.length === 6){
+            btnA.classList="btn-outline"
+            return
+        }
         if (existe) {
-            btnA.className = "btn-outline bg-red-500 text-black";
-        } else {
             btnA.className = "btn-outline";
+            article.style.border="black 1px solid"
+            article.style.borderRadius="20px"
+          
+        } else {
+            btnA.className = `btn-outline ${typeShape} text-white`;
         }
 
         // Bouton dyal Details
@@ -97,9 +103,9 @@ function afficherCard(cart) {
             btnD.disabled = existe || teams.length >= 6;
 
             if (existe) {
-                btnD.className = "btn-outline bg-red-500 text-black";
-            } else {
                 btnD.className = "btn-outline";
+            } else {
+                btnD.className = `btn-outline ${typeShape} text-white`;
             }
         }
     }
@@ -139,7 +145,7 @@ function afficherCard(cart) {
 
             if (id && id.textContent.trim() === String(cart.id)) {
                 bouton.disabled = true;
-                bouton.className = "btn-outline bg-red-500 text-black";
+                bouton.className = `btn-outline `;
             }
         });
     }
@@ -149,6 +155,7 @@ function afficherCard(cart) {
     btnA.addEventListener("click", function(event) {
         //event.stopPropagation();
         ajouterTeam();
+
     });
 
 
@@ -264,8 +271,8 @@ let detail=document.querySelector("#detail")
 
 
 
-creatures.forEach((pok)=>{
-  afficherCard(pok)
+creatures.forEach((p)=>{
+    afficherCard(p)
 })
       
 // -------------------------------------------------------------
@@ -337,6 +344,13 @@ types.forEach((t)=>{
 // (voir le tableau du brief). Affichez le message d'erreur sous le
 // champ, et n'ajoutez jamais une créature invalide.
 // -------------------------------------------------------------
+let listPok=JSON.parse(localStorage.getItem("listPok"))|| [];
+console.log(creatures)
+if(listPok.length!==0){
+    listPok.forEach((p)=>{
+        afficherCard(p)
+    })
+}
 function addPok(){
   let id=document.querySelector("input[name=\"id\"]")
   let id_error=id.nextElementSibling
@@ -344,7 +358,7 @@ function addPok(){
   let existe = false
   id.addEventListener("input",()=>{
       
-     existe = creatures.some(pok => pok.id === id.value);
+    existe = listPok.some(pok => pok.id === id.value);
     if(existe){
         id_error.textContent="this id is already exist"
           id_error.classList="text-red-500"
@@ -471,9 +485,10 @@ function addPok(){
           image: image.value,
           description: description.value
         }
-        creatures.push(cart)
-        
-        afficherCard(cart)
+        listPok.push(cart)
+        localStorage.setItem("listPok",JSON.stringify(listPok))
+        afficherCard(cart);
+
         form.reset();
         form.style.backgroundColor = "";
     
@@ -481,6 +496,7 @@ function addPok(){
   });
 
 }
+
 function checkStatistique(st){
   let st_error=st.nextElementSibling
   let st_reg=/^\d{1,3}$/ 
