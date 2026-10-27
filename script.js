@@ -12,6 +12,14 @@ import { creatures } from "./data.js";
 // Supprimez les cartes écrites à la main dans index.html et
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
+
+let div = document.querySelector("#darkMode");
+
+div.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    document.querySelector(".i").classList.toggle("fa-regular")
+    document.querySelector(".i").classList.toggle("fa-solid")
+});
 let cmp=document.querySelector("#cmp")
 
 let teams = JSON.parse(localStorage.getItem("teams")) || [];
@@ -40,7 +48,7 @@ function afficherCard(cart) {
     let article = document.createElement("article");
 
     article.innerHTML = `
-        <article class="flex flex-col gap-3 rounded-card border-2  bg-white p-3 pb-4 hover:translate-y-2">
+        <article class=" card flex flex-col gap-3 rounded-card border-2  bg-white p-3 pb-4 hover:translate-y-2">
 
             <div class="relative flex h-40 items-center justify-center rounded-xl bg-brand-light">
                 <img src="${cart.image}"
@@ -188,7 +196,7 @@ function afficherCard(cart) {
                 </span>
             </div>
 
-            <p class="text-gray-700">${cart.description}</p>
+            <p class="p text-gray-700">${cart.description}</p>
 
             <div class="flex flex-col gap-2 text-sm">
 
