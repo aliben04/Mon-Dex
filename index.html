@@ -79,7 +79,7 @@
     </div>
 
     <!-- ===================== FORMULAIRE DE CRÉATION ===================== -->
-    <section id="create" aria-label="Nouvelle créature" class="flex flex-col gap-6 rounded-card bg-white p-8 border border-red-500">
+    <section id="create" aria-label="Nouvelle créature" class="flex flex-col gap-6 rounded-card bg-white p-8 border border-black">
       <div>
         <h2 class="font-display text-3xl font-extrabold text-red-500">Nouvelle créature</h2>
         <p class="text-muted">Chaque champ est vérifié avant l'ajout de la créature.</p>
@@ -94,7 +94,7 @@
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold">Type
-          <select name="type" class="field font-normal">
+          <select name="type" class="field font-normal" required>
             <option value="">Choisir un type</option>
             <option>Feu</option><option>Eau</option><option>Plante</option>
             <option>Électrik</option><option>Glace</option><option>Ténèbres</option>
@@ -127,7 +127,7 @@
         </label>
         <div class="flex flex-wrap justify-end gap-3 md:col-span-2 lg:col-span-4">
           <button type="reset" class="btn-outline bg-red-500 px-6 text-white">Effacer</button>
-          <button type="submit" class="btn-primary bg-green-400 border-2 border-black">Ajouter la créature</button>
+          <button id="submit" class="btn-primary bg-green-400 border-2 border-black">Ajouter la créature</button>
         </div>
       </form>
     </section>

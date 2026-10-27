@@ -337,14 +337,20 @@ types.forEach((t)=>{
 // (voir le tableau du brief). Affichez le message d'erreur sous le
 // champ, et n'ajoutez jamais une créature invalide.
 // -------------------------------------------------------------
-
 function addPok(){
   let id=document.querySelector("input[name=\"id\"]")
   let id_error=id.nextElementSibling
   let id_reg=/^#\d{3}$/
+  let existe = false
   id.addEventListener("input",()=>{
-
-    if(id_reg.test(id.value)){
+      
+     existe = creatures.some(pok => pok.id === id.value);
+    if(existe){
+        id_error.textContent="this id is already exist"
+          id_error.classList="text-red-500"
+          id.style.border="red 2px solid"
+          id.style.boxShadow="2px 2px 5px red"
+    } else if(id_reg.test(id.value)){
           id_error.textContent="numero valid"
           id_error.classList="text-green-500"
           id.style.border="green 2px solid"
@@ -372,7 +378,7 @@ function addPok(){
           name.style.border="red 2px solid"
           name.style.boxShadow="2px 2px 5px red"
     }
-  })
+  }) 
   let niveu=document.querySelector("input[name=\"level\"]")
   let niveu_error=niveu.nextElementSibling
   let niveu_reg=/^(Niveau|Level)\s\d{1}$/
@@ -408,7 +414,7 @@ function addPok(){
     }
   })
   let image=document.querySelector("input[name=\"image\"]")
-  let image_error=description.nextElementSibling
+  let image_error=image.nextElementSibling
   let image_reg=/^https:\/\/\S+\.(png|jpe?g|webp|gif)$/i 
   image.addEventListener("input",()=>{
 
@@ -424,12 +430,55 @@ function addPok(){
           image.style.boxShadow="2px 2px 5px red"
     }
   })
+  let type = document.querySelector('select[name="type"]');
+  let type_error = type.nextElementSibling;
+
+  type.addEventListener("change", () => {
+      if (type.value === "") {
+          type_error.textContent = "Veuillez choisir un type";
+          type_error.classList="text-red-500"
+          type.style.border="red 2px solid"
+          type.style.boxShadow="2px 2px 5px red"
+      } else {
+          type_error.textContent = "type valid";
+          type_error.classList="text-green-500"
+          type.style.border="green 2px solid"
+          type.style.boxShadow="2px 2px 5px green"
+          type_error.classList.remove("text-red-500");
+      }
+  });
   let st=document.querySelector("input[name=\"stat1\"]")
   checkStatistique(st)
   let st2=document.querySelector("input[name=\"stat2\"]")
   checkStatistique(st2)
   let st3=document.querySelector("input[name=\"stat3\"]")
   checkStatistique(st3)
+  let form = document.querySelector("#creature-form");
+  let btnnSubmit = document.querySelector("#submit");
+  
+  form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (existe||st.value === "" || st2.value==="" || st3.value==="" || type.value==="" || image.value==="" || description.value===""|| niveu.value===""|| name.value===""|| id.value==="") {
+          btnnSubmit.style.backgroundColor = "red"
+          return;
+      }else{
+        let cart=  {
+          id: id.value,
+          name: name.value,
+          type: type.value,
+          level: niveu.value,
+          stats: { hp: st.value, attack: st2.value, defence: st3.value },
+          image: image.value,
+          description: description.value
+        }
+        creatures.push(cart)
+        
+        afficherCard(cart)
+        form.reset();
+        form.style.backgroundColor = "";
+    
+      }
+  });
 
 }
 function checkStatistique(st){
@@ -449,6 +498,7 @@ function checkStatistique(st){
           st.style.boxShadow="2px 2px 5px red"
     }
   })
+
 }
 addPok()
 
